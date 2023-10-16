@@ -18,6 +18,7 @@ MainWindow::MainWindow()
     else
     {
         qDebug() << "Serial Port is not connected";
+        qDebug() << serial->error();
     }
 }
 
