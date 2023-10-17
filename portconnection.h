@@ -3,6 +3,10 @@
 
 #include <QDebug>
 #include <QtSerialPort/QSerialPort>
+#include <QString>
+#include <QQuickItem>
+#include <QQmlApplicationEngine>
+#include <QQmlProperty>
 
 class PortConnection : public QObject
 {
@@ -10,6 +14,9 @@ class PortConnection : public QObject
 public:
     PortConnection();
     ~PortConnection();
+
+signals:
+    void portStatus(QString s);
 
 public slots:
     void onConnectToPort();

@@ -13,4 +13,15 @@ Window {
         text: "Connect"
         onClicked: portConnection.onConnectToPort();
     }
+
+    Label {
+        id: _labelPortStatus
+        x: 200
+        text: qsTr("Label")
+
+        Connections {
+            target: portConnection
+            onPortStatus: _labelPortStatus.text = s;
+        }
+    }
 }

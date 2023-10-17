@@ -3,7 +3,6 @@
 PortConnection::PortConnection()
 {
 
-
 }
 
 PortConnection::~PortConnection()
@@ -28,13 +27,14 @@ void PortConnection::onConnectToPort()
 
     if (serial->isOpen())
     {
+        portStatus("Serial Port Is connected");
         qDebug() << "Serial Port Is connected";
         qDebug() << serial->error();
     }
     else
     {
+        portStatus("Serial Port is not connected");
         qDebug() << "Serial Port is not connected";
         qDebug() << serial->error();
     }
 }
-
