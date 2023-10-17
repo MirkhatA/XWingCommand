@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "mainwindow.h"
+#include "portconnection.h"
 
 
 int main(int argc, char *argv[])
@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
         }, Qt::QueuedConnection);
     engine.load(url);
 
-    MainWindow m;
+    PortConnection portConnection;
 
     QQmlContext *rootContext = engine.rootContext();
-    rootContext->setContextProperty("portConnection", &m);
+    rootContext->setContextProperty("portConnection", &portConnection);
 
     return app.exec();
 }

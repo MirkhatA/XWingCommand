@@ -1,12 +1,12 @@
-#include "mainwindow.h"
+#include "portconnection.h"
 
-MainWindow::MainWindow()
+PortConnection::PortConnection()
 {
 
 
 }
 
-MainWindow::~MainWindow()
+PortConnection::~PortConnection()
 {
     serial->close();
 
@@ -15,7 +15,7 @@ MainWindow::~MainWindow()
     delete serial;
 }
 
-void MainWindow::onConnectToPort()
+void PortConnection::onConnectToPort()
 {
     serial = new QSerialPort();
     serial->setPortName("COM13");
@@ -29,7 +29,7 @@ void MainWindow::onConnectToPort()
     if (serial->isOpen())
     {
         qDebug() << "Serial Port Is connected";
-
+        qDebug() << serial->error();
     }
     else
     {

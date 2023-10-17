@@ -1,15 +1,15 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef PORTCONNECTION_H
+#define PORTCONNECTION_H
 
 #include <QDebug>
 #include <QtSerialPort/QSerialPort>
 
-class MainWindow : public QObject
+class PortConnection : public QObject
 {
     Q_OBJECT
 public:
-    MainWindow();
-    ~MainWindow();
+    PortConnection();
+    ~PortConnection();
 
 public slots:
     void onConnectToPort();
@@ -18,4 +18,4 @@ private:
     QSerialPort *serial;
 };
 
-#endif // MAINWINDOW_H
+#endif // PORTCONNECTION_H
