@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-
 #include <QDebug>
 #include <QtSerialPort/QSerialPort>
 
@@ -11,6 +10,10 @@ class MainWindow : public QObject
 public:
     MainWindow();
     ~MainWindow();
+
+public slots:
+    void onConnectToPort();
+
 private:
     QSerialPort *serial;
 };

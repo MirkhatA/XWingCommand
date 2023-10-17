@@ -2,6 +2,21 @@
 
 MainWindow::MainWindow()
 {
+
+
+}
+
+MainWindow::~MainWindow()
+{
+    serial->close();
+
+    qDebug() << "Serial Port is closed";
+
+    delete serial;
+}
+
+void MainWindow::onConnectToPort()
+{
     serial = new QSerialPort();
     serial->setPortName("COM13");
     serial->setBaudRate(QSerialPort::Baud57600);
@@ -14,20 +29,12 @@ MainWindow::MainWindow()
     if (serial->isOpen())
     {
         qDebug() << "Serial Port Is connected";
+
     }
     else
     {
         qDebug() << "Serial Port is not connected";
         qDebug() << serial->error();
     }
-}
-
-MainWindow::~MainWindow()
-{
-    serial->close();
-
-    qDebug() << "Serial Port is closed";
-
-    delete serial;
 }
 

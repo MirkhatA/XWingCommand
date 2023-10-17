@@ -1,5 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
+
 #include "mainwindow.h"
 
 
@@ -20,6 +22,9 @@ int main(int argc, char *argv[])
     engine.load(url);
 
     MainWindow m;
+
+    QQmlContext *rootContext = engine.rootContext();
+    rootContext->setContextProperty("portConnection", &m);
 
     return app.exec();
 }
