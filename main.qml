@@ -14,6 +14,13 @@ Window {
         onClicked: portConnection.onConnectToPort();
     }
 
+    Button {
+        y: 100
+        id: _buttonToggleServo
+        text: "Toggle port"
+        onClicked: portConnection.toggleServo();
+    }
+
     Label {
         id: _labelPortStatus
         x: 200

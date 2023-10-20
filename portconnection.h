@@ -7,6 +7,10 @@
 #include <QQuickItem>
 #include <QQmlApplicationEngine>
 #include <QQmlProperty>
+#include <QUdpSocket>
+#include <QThread>
+
+#include <mavlink/common/mavlink.h>
 
 class PortConnection : public QObject
 {
@@ -20,6 +24,8 @@ signals:
 
 public slots:
     void onConnectToPort();
+
+    void toggleServo();
 
 private:
     QSerialPort *serial;
