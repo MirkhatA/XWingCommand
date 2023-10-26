@@ -1,9 +1,10 @@
 #ifndef SERIALPORT_H
 #define SERIALPORT_H
 
+#include <QDebug>
+#include <QThread>>
 #include <QObject>
 #include <QSerialPort>
-#include <QDebug>
 
 #include <mavlink/common/mavlink.h>
 
@@ -13,8 +14,6 @@ class SerialPort : public QObject
 public:
     explicit            SerialPort(QObject *parent = nullptr);
     ~SerialPort();
-
-
 
     QString             getServoStatus() const;
     void                setServoStatus(const QString &newServoStatus);
@@ -45,6 +44,7 @@ private:
     uint8_t             servoIndex      =   5;                  // MAIN OUT 5
     uint8_t             confirmation    =   0;                  // Confirmation
 
+    uint16_t            currentPwmValue =   2000;
     uint16_t            pwmValue1       =   1000;               // 0 degrees
     uint16_t            pwmValue2       =   2000;               // 180 degrees
 

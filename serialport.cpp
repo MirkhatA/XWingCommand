@@ -42,6 +42,8 @@ bool SerialPort::connectPixhawk(const QString &portName)
             qDebug() << m_serialPort->error();
             setConnectionStatus("SUCCESS");
             qDebug() << "Serial port: " << m_serialPort;
+            setMavlinkMsg(currentPwmValue);
+            sendMessage();
             return true;
         }
         else
@@ -65,8 +67,9 @@ void SerialPort::setMavlinkMsg(uint16_t pwmValue)
                                   MAV_CMD_DO_SET_SERVO,           // Command ID for setting a servo
                                   0,                              // Confirmation
                                   servoIndex,                     // Servo index
-                                  pwmValue,                      // PWM value for 0 degrees
+                                  pwmValue,                       // PWM value for 0 degrees
                                   0, 0, 0, 0, 0);                 // Parameters 2-7 not used
+    qDebug() << "set mavlink " << pwmValue << "/n";
 }
 
 void SerialPort::sendMessage()
@@ -76,20 +79,37 @@ void SerialPort::sendMessage()
     uint16_t len = mavlink_msg_to_send_buffer(buf, &msg);
     m_serialPort->write(reinterpret_cast<const char*>(buf), len);
     m_serialPort->flush();
+    qDebug() << "send msg /n";
 }
 
 bool SerialPort::toggleServo()
 {
     if (servoStatus != "ON")
     {
-        setMavlinkMsg(pwmValue1);
-        sendMessage();
+        while (currentPwmValue != pwmValue1)
+        {
+            currentPwmValue -= 100;
+            qDebug() << currentPwmValue << "/n";
+            setMavlinkMsg(currentPwmValue);
+            sendMessage();
+            QThread::msleep(1000);
+        }
+
+        qDebug() << "Its on";
         setServoStatus("ON");
         return true;
     } else
     {
-        setMavlinkMsg(pwmValue2);
-        sendMessage();
+        while (currentPwmValue != pwmValue2)
+        {
+            currentPwmValue += 100;
+            qDebug() << currentPwmValue << "/n";
+            setMavlinkMsg(currentPwmValue);
+            sendMessage();
+            QThread::msleep(1000);
+        }
+
+        qDebug() << "Its off";
         setServoStatus("OFF");
         return false;
     }
