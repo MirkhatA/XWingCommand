@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.0
+import XWingCommand 1.0
 
 Window {
     width: 640
@@ -8,27 +9,32 @@ Window {
     visible: true
     title: qsTr("XWingCommand")
 
+    property bool isServoConnected: false;
+    property bool isServoToggled: false;
+
+    SerialPort {
+        id: _serialPort;
+    }
+
+    // TODO: List of available Ports
+
     Button {
-        id: _buttonConnectPort
+        id: _portConnectButton
         text: "Connect"
-        onClicked: portConnection.onConnectToPort();
+        onClicked: {
+            isServoConnected = _serialPort.connectPixhawk("COM13");
+            _portConnectButton.text = isServoConnected ? "Disconnect" : "Connect";
+        }
     }
 
     Button {
-        y: 100
-        id: _buttonToggleServo
-        text: "Toggle port"
-        onClicked: portConnection.toggleServo();
-    }
-
-    Label {
-        id: _labelPortStatus
-        x: 200
-        text: qsTr("Label")
-
-        Connections {
-            target: portConnection
-            onPortStatus: _labelPortStatus.text = s;
+        id: _toggleServoButton
+        text: "Turn on"
+        anchors.top: _portConnectButton.bottom;
+        enabled: isServoConnected;
+        onClicked: {
+            isServoToggled = _serialPort.toggleServo();
+            _toggleServoButton.text = isServoToggled ? "Turn off" : "Turn on";
         }
     }
 }

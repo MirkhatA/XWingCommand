@@ -2,8 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "portconnection.h"
-#include <mavlink/common/mavlink.h>
+#include "serialport.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,13 +10,15 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-    PortConnection *portConnection = new PortConnection;
-
-    engine.rootContext()->setContextProperty("portConnection", portConnection);
+    qmlRegisterType<SerialPort>("XWingCommand", 1, 0, "SerialPort");
+//    qmlRegisterType<Servo>("XWingCommand", 1, 0, "Servo");
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
+
+    QObject contextObject;
+
 
     return app.exec();
 }

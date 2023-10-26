@@ -6,7 +6,7 @@ QT += quick serialport
 
 SOURCES += \
         main.cpp \
-        portconnection.cpp
+        serialport.cpp
 
 RESOURCES += qml.qrc
 
@@ -22,4 +22,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    portconnection.h
+    serialport.h
