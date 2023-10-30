@@ -41,6 +41,12 @@ bool SerialPort::connectPixhawk(const QString &portName)
             qDebug() << "Connected On Port " << portName;
             qDebug() << m_serialPort->error();
             setConnectionStatus("SUCCESS");
+
+            setMavlinkMsg(pwmValue2, servoIndex1);
+            sendMessage();
+            setMavlinkMsg(pwmValue2, servoIndex2);
+            sendMessage();
+
             qDebug() << "Serial port: " << m_serialPort;
             return true;
         }
@@ -57,7 +63,7 @@ bool SerialPort::connectPixhawk(const QString &portName)
     }
 }
 
-void SerialPort::setMavlinkMsg(uint16_t pwmValue)
+void SerialPort::setMavlinkMsg(uint16_t pwmValue, uint8_t servoIndex)
 {
     mavlink_msg_command_long_pack(systemId, componentId, &msg,
                                   systemId,                       // Target system ID
@@ -65,15 +71,14 @@ void SerialPort::setMavlinkMsg(uint16_t pwmValue)
                                   MAV_CMD_DO_SET_SERVO,           // Command ID for setting a servo
                                   0,                              // Confirmation
                                   servoIndex,                     // Servo index
-                                  pwmValue,                      // PWM value for 0 degrees
+                                  pwmValue,                       // PWM value for 0 degrees
                                   0, 0, 0, 0, 0);                 // Parameters 2-7 not used
 }
 
 void SerialPort::sendMessage()
 {
     // Serialize the message and send it over the serial port
-    uint8_t buf[MAVLINK_MAX_PACKET_LEN];
-    uint16_t len = mavlink_msg_to_send_buffer(buf, &msg);
+    len = mavlink_msg_to_send_buffer(buf, &msg);
     m_serialPort->write(reinterpret_cast<const char*>(buf), len);
     m_serialPort->flush();
 }
@@ -82,15 +87,23 @@ bool SerialPort::toggleServo()
 {
     if (servoStatus != "ON")
     {
-        setMavlinkMsg(pwmValue1);
+        setMavlinkMsg(pwmValue1, servoIndex1);
         sendMessage();
+        setMavlinkMsg(pwmValue1, servoIndex2);
+        sendMessage();
+
         setServoStatus("ON");
+
         return true;
     } else
     {
-        setMavlinkMsg(pwmValue2);
+        setMavlinkMsg(pwmValue2, servoIndex1);
         sendMessage();
+        setMavlinkMsg(pwmValue2, servoIndex2);
+        sendMessage();
+
         setServoStatus("OFF");
+
         return false;
     }
 }

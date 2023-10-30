@@ -13,6 +13,9 @@ int main(int argc, char *argv[])
     qmlRegisterType<SerialPort>("XWingCommand", 1, 0, "SerialPort");
 //    qmlRegisterType<Servo>("XWingCommand", 1, 0, "Servo");
 
+    QList<QSerialPortInfo> availablePorts = QSerialPortInfo::availablePorts();
+
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
